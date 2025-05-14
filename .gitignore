@@ -1,0 +1,71 @@
+# ========== Qt Creator ==========
+*.autosave
+*.qmake.stash
+*.pro.user
+*.pro.user.*
+*.pro.user.???
+*.qmlproject.user
+*.qmlproject.user.*
+*.creator.*
+*.creator
+*.files
+*.includes
+*.config
+
+# ========== Qt Build Folders ==========
+build
+build-*/
+debug/
+release/
+x64/
+x86/
+*.exe
+*.dll
+*.dylib
+*.so
+*.a
+*.lib
+*.obj
+*.o
+*.moc/
+*.rcc/
+*.qrc.dep
+*.qrc.debug
+*.qrc.release
+
+# ========== Compiler-generated ==========
+*.gcno
+*.gcda
+*.gch
+
+# ========== Make/CMake ==========
+Makefile*
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+
+# ========== QMake Generated ==========
+moc_*
+ui_*
+qrc_*
+*.moc
+*.res
+*.tmp
+*.bak
+
+# ========== Logs and Crash Dumps ==========
+*.log
+*.dmp
+*.stackdump
+
+# ========== OS & Misc ==========
+.DS_Store
+Thumbs.db
+ehthumbs.db
+desktop.ini
+
+# ========== Editor/IDE ==========
+*.swp
+*.swo
+.vscode/
+.idea/
