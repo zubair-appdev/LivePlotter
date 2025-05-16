@@ -11,6 +11,8 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
 
+    stopFlag = true;
+
     serialObj =   new serialPortHandler(this);
 
     connect(ui->pushButton_clear,&QPushButton::clicked,ui->textEdit_rawBytes,&QTextEdit::clear);
@@ -205,7 +207,7 @@ void MainWindow::portStatus(const QString &data)
         QMessageBox::critical(this,"Port Error","Please Select Port Using Above Dropdown");
     }
 
-    if(data.startsWith("Serial port ") && data.endsWith(" opened successfully at baud rate 460800"))
+    if(data.startsWith("Serial port ") && data.endsWith(" opened successfully at baud rate 921600"))
     {
         QMessageBox::information(this,"Success",data);
     }
@@ -221,6 +223,12 @@ void MainWindow::portStatus(const QString &data)
 
 void MainWindow::on_pushButton_start_clicked()
 {
+    if(stopFlag == false)
+    {
+        QMessageBox::warning(this,"Error","Already Get Power Is Running !\n Do you want to proceed");
+        stopFlag = true;
+    }
+
     initializePlot();
     sampleNumber = 0;
     allXValues.clear();
@@ -299,6 +307,8 @@ void MainWindow::on_pushButton_getPower_clicked()
     // Start the timeout timer
     responseTimer->start(2500); // 2.5 Sec timer
 
+    stopFlag = false;
+
     QByteArray command;
 
     command.append(0x47); //1
@@ -369,4 +379,31 @@ void MainWindow::receivePowerData(QVector<float> recvPowerData)
     blinkSpinBox(ui->doubleSpinBox_5);
     blinkSpinBox(ui->doubleSpinBox_neg5);
     blinkSpinBox(ui->doubleSpinBox_3p3);
+
+    //Sending getPower infinitely only stops on stop button
+    if(stopFlag == false)
+    {
+        QByteArray command;
+
+        command.append(0x47); //1
+        command.append(0x01); //2
+
+        quint8 checkSum = calculateChecksum(command); //3
+
+        //checksum
+        command.append(checkSum); //total 3 bytes
+
+
+        qDebug() << "Power Card Data cmd sent : " + hexBytes(command);
+        writeToNotes("Power Card Data cmd sent : " + hexBytes(command));
+
+
+        emit sendMsgId(0x02);
+        serialObj->writeData(command);
+    }
+}
+
+void MainWindow::on_pushButton_getPowerStop_clicked()
+{
+    stopFlag = true;
 }

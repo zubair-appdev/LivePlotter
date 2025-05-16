@@ -60,6 +60,8 @@ private slots:
 
     void receivePowerData(QVector<float> recvPowerData);
 
+    void on_pushButton_getPowerStop_clicked();
+
 signals:
     void sendMsgId(quint8 id);
 
@@ -78,6 +80,8 @@ private:
     int sampleNumber = 0;
     QVector<double> allXValues;
     QVector<double> allYValues;
+
+    bool stopFlag;
 
 };
 #endif // MAINWINDOW_H

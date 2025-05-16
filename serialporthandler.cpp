@@ -33,7 +33,7 @@ void serialPortHandler::setPORTNAME(const QString &portName)
     }
 
     serial->setPortName(portName);
-    serial->setBaudRate(460800);
+    serial->setBaudRate(921600);
     serial->setDataBits(QSerialPort::Data8);
     serial->setParity(QSerialPort::NoParity);
     serial->setStopBits(QSerialPort::OneStop);
@@ -47,8 +47,8 @@ void serialPortHandler::setPORTNAME(const QString &portName)
     }
     else
     {
-        qDebug() << "Serial port "<<serial->portName()<<" opened successfully at baud rate 460800";
-        emit portOpening("Serial port "+serial->portName()+" opened successfully at baud rate 460800");
+        qDebug() << "Serial port "<<serial->portName()<<" opened successfully at baud rate 921600";
+        emit portOpening("Serial port "+serial->portName()+" opened successfully at baud rate 921600");
     }
 }
 
@@ -172,7 +172,8 @@ void serialPortHandler::readData()
 
         if(buffer.size() == 17
                 && static_cast<unsigned char>(buffer[0]) == 0x54
-                && static_cast<unsigned char>(buffer[1]) == 0x01)
+                && static_cast<unsigned char>(buffer[1]) == 0x01
+                && static_cast<unsigned char>(buffer[16]) == chkSum(buffer))
         {
             powerId = 0x02;
             ResponseData = buffer;
